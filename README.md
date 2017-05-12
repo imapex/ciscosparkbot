@@ -2,6 +2,25 @@
 
 A flask based Bot for Cisco spark
 
+# Prerequisites
+
+You'll need to start by adding your bot to the Cisco Spark website'
+
+https://developer.ciscospark.com/add-app.html
+
+![add-app](images/newapp.png)
+
+1. Click create bot
+
+![add-bot](images/newbot.png)
+
+2. Fill out all the details about your bot, including a publicly hosted avatar image
+
+![enter-details](images/enterdetails.png)
+
+3. Click "Add Bot", make sure to copy your access token, you will need this in a second
+
+![copy-token](images/copytoken.png)
 
 # Installation
 
