@@ -19,6 +19,9 @@ export SPARK_BOT_TOKEN=<your bots token>
 export SPARK_BOT_EMAIL=<your bots email?
 export SPARK_BOT_APP_NAME=<your bots name>
 ```
+
+A [sample script](sample.py) is also provided for your convenience
+
 ```
 import os
 from ciscosparkbot import SparkBot
