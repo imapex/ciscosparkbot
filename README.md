@@ -11,6 +11,15 @@ pip install ciscosparkbot
 
 # Usage
 
+The easiest way to use this module is to set a few environment variables
+
+```
+export SPARK_BOT_URL=https://mypublicsite.io
+export SPARK_BOT_TOKEN=<your bots token>
+export SPARK_BOT_EMAIL=<your bots email?
+export SPARK_BOT_APP_NAME=<your bots name>
+```
+```
 import os
 from ciscosparkbot import SparkBot
 
@@ -27,3 +36,52 @@ bot = SparkBot(bot_app_name, spark_bot_token=spark_token,
 
 bot.add_command('dosomething', 'help for do something', do_something)
 bot.run(host='0.0.0.0', port=5000)
+
+```
+
+# ngrok
+
+ngrok will make easy for you to develop your code with a live bot.
+
+You can find installation instructions here: https://ngrok.com/download
+
+After you've installed ngrok, in another window start the service
+
+
+`ngrok http 5000`
+
+
+You should see a screen that looks like this:
+
+```
+ngrok by @inconshreveable                                                                                                                                 (Ctrl+C to quit)
+
+Session Status                online
+Version                       2.2.4
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://this.is.the.url.you.need -> localhost:5000
+Forwarding                    https://this.is.the.url.you.need -> localhost:5000
+
+Connections                   ttl     opn     rt1     rt5     p50     p90
+                              2       0       0.00    0.00    0.77    1.16
+
+HTTP Requests
+-------------
+
+POST /                         200 OK
+```
+
+Make sure and update your environment with this url:
+
+```
+export SPARK_BOT_URL=https://this.is.the.url.you.need
+
+```
+
+Now launch your bot!!
+
+
+```
+python sample.py
+```
