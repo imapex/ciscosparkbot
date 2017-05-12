@@ -4,7 +4,8 @@ A flask based Bot for Cisco spark
 
 # Prerequisites
 
-You'll need to start by adding your bot to the Cisco Spark website'
+If you don't already have a Cisco Spark account, go ahead and register for one.  They are free.
+You'll need to start by adding your bot to the Cisco Spark website.
 
 https://developer.ciscospark.com/add-app.html
 
@@ -24,7 +25,11 @@ https://developer.ciscospark.com/add-app.html
 
 # Installation
 
+Create a virtualenv and install the module
+
 ```
+virtualenv venv
+source venv/bin/activate
 pip install ciscosparkbot
 ```
 
