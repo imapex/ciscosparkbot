@@ -119,7 +119,7 @@ class SparkBot(Flask):
         # Need try block because if there are NO webhooks it throws an error
 
         webhook = None
-
+        wh = None
         # webhooks is a generator
         for h in webhooks:
             if h.name == name:

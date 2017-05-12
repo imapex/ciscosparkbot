@@ -7,7 +7,7 @@ __title__ = "ciscosparkbot"
 __summary__ = "Python Bot for Cisco Spark"
 __uri__ = "http://github.com/imapex/ciscosparkbot"
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 __author__ = "Cisco Systems, Inc."
 __email__ = "imapex-admin@cisco.com"
