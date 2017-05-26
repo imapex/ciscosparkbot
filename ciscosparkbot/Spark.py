@@ -22,7 +22,7 @@ class SparkBot(Flask):
         self.DEBUG = debug
         self.spark_bot_name = spark_bot_name
         self.spark_bot_token = spark_bot_token
-        self.spark_bot_email = spark_bot_token
+        self.spark_bot_email = spark_bot_email
         self.spark_bot_url = spark_bot_url
 
         self.spark = CiscoSparkAPI(access_token=spark_bot_token)
