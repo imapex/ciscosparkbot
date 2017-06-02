@@ -61,7 +61,8 @@ class SparkBot(Flask):
 
     # Entry point for Spark Webhooks
     def process_webhook(self):
-        print request
+        if self.DEBUG:
+            sys.stderr.write(request)
         # Check if the Spark connection has been made
         if self.spark is None:
             sys.stderr.write("Bot not ready.  \n")
@@ -132,16 +133,13 @@ class SparkBot(Flask):
             wh = spark.webhooks.create(name=name, targetUrl=targeturl, resource="messages", event="created")
 
         # if we have an existing webhook update it, here is a better place to worry about exceptions
-        try:
-            wh = spark.webhooks.update(webhookId=webhook.id, name=name, targetUrl=targeturl)
+        else:
+            try:
+                wh = spark.webhooks.update(webhookId=wh.id, name=name, targetUrl=targeturl)
 
-        # https://github.com/CiscoDevNet/ciscosparkapi/blob/master/ciscosparkapi/api/webhooks.py#L237
-        except AssertionError:
-            sys.stderr.write("You screwed up a parameter")
-        except ciscosparkapiException:
-            sys.stderr.write("spark thinks you screwed up")
-        except:
-            sys.stderr.write("spark screwed up")
+            # https://github.com/CiscoDevNet/ciscosparkapi/blob/master/ciscosparkapi/api/webhooks.py#L237
+            except Exception as e:
+                sys.stderr.write("Encountered an error updating webhook: {}".format(e))
 
         return wh
 
@@ -160,7 +158,7 @@ class SparkBot(Flask):
         # First make sure not processing a message from the bots
         if message.personEmail in self.spark.people.me().emails:
             if self.DEBUG:
-                sys.stderr.write("Message from bots recieved." + "\n")
+                sys.stderr.write("Ignoring message from ourself" + "\n")
             return ""
 
         # Log details on message
