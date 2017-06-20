@@ -20,7 +20,7 @@ setup(
     url=about["__uri__"],
     license=about["__license__"],
     install_requires=["requests",
-                      "ciscosparkapi>=0.5.5",
+                      "ciscosparkapi==0.5.5",
                       "Flask>=0.12.1"
                       ],
     description="Python Bot for Cisco Spark",
