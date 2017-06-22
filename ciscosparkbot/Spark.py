@@ -29,10 +29,7 @@ class SparkBot(Flask):
 
         # A dictionary of commands this bot listens to
         # Each key in the dictionary is a command, with associated help text and callback function
-        self.commands = {"/echo":
-                             {"help": "Reply back with the same message sent.",
-                              "callback": self.send_echo},
-                         "/help":
+        self.commands = {"/help":
                              {"help": "Get help.",
                               "callback": self.send_help}
                          }
@@ -189,12 +186,6 @@ class SparkBot(Flask):
 
     def health(self):
         return "I'm Alive"
-
-    # Sample command function that just echos back the sent message
-    def send_echo(self, incoming):
-        # Get sent message
-        message = self.extract_message("/echo", incoming.text)
-        return message
 
     # Construct a help message for users.
     def send_help(self, post_data):
