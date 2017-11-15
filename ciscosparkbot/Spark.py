@@ -263,6 +263,14 @@ class SparkBot(Flask):
         """
         self.commands[command] = {"help": help_message, "callback": callback}
 
+    def remove_command(self, command):
+        """
+        Remove a command from the bot
+        :param command: The command string, example "/status"
+        :return:
+        """
+        del self.commands[command]
+
     # noinspection PyMethodMayBeStatic
     def extract_message(self, command, text):
         """
@@ -286,7 +294,8 @@ class SparkBot(Flask):
         message = "Hello!  "
         message += "I understand the following commands:  \n"
         for c in self.commands.items():
-            message += "* **%s**: %s \n" % (c[0], c[1]["help"])
+            if c[1]["help"][0] != "*":
+                message += "* **%s**: %s \n" % (c[0], c[1]["help"])
         return message
 
     def send_echo(self, post_data):
