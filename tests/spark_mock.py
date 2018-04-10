@@ -105,7 +105,6 @@ class MockSparkAPI:
         data['personEmail'] = 'foo@foo.com'
         return data
 
-
     @classmethod
     def me(cls):
         data = {

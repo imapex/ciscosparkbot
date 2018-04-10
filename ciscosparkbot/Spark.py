@@ -7,7 +7,7 @@ Classes:
     instance of a Spark Bot.  Handles requisite webhook registration and setup.
 """
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from ciscosparkapi import CiscoSparkAPI
 import sys
 import json

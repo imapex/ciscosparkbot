@@ -1,4 +1,4 @@
-from .Spark import SparkBot
+from .Spark import SparkBot # noqa
 import inspect as _inspect
 from .__about__ import (  # noqa
     __author__, __copyright__, __email__, __license__, __summary__, __title__,
