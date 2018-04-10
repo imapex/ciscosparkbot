@@ -88,10 +88,23 @@ class MockSparkAPI:
         return data
 
     @classmethod
+    def empty_message(cls):
+        data = MockSparkAPI.get_message_help()
+        data['text'] = ""
+        return data
+
+    @classmethod
+    def get_message_dosomething(cls):
+        data = MockSparkAPI.get_message_help()
+        data['text'] = "/echo imtheecho"
+        return data
+
+    @classmethod
     def get_message_from_bot(cls):
         data = MockSparkAPI.get_message_help()
         data['personEmail'] = 'foo@foo.com'
         return data
+
 
     @classmethod
     def me(cls):
