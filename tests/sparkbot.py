@@ -64,6 +64,32 @@ class SparkBotTests(unittest.TestCase):
         self.app = bot.test_client()
 
     @requests_mock.mock()
+    def test_bad_config_raises_valueerror(self, m):
+        with self.assertRaises(ValueError):
+            m.get('https://api.ciscospark.com/v1/webhooks',
+                  json=MockSparkAPI.list_webhooks_exist())
+            m.post('https://api.ciscospark.com/v1/webhooks',
+                   json=MockSparkAPI.create_webhook())
+
+            bot_email = None
+            spark_token = "somefaketoken"
+            bot_url = "http://fakebot.com"
+            bot_app_name = "testbot"
+            # Create a new bot
+            bot = SparkBot(bot_app_name,
+                           spark_bot_token=spark_token,
+                           spark_bot_url=bot_url,
+                           spark_bot_email=bot_email,
+                           debug=True)
+
+            # Add new command
+            bot.add_command('/dosomething',
+                            'help for do something',
+                            self.do_something)
+            bot.testing = True
+            self.app = bot.test_client()
+
+    @requests_mock.mock()
     def test_spark_setup(self, m):
         m.get('https://api.ciscospark.com/v1/webhooks',
               json=MockSparkAPI.list_webhooks())
@@ -75,11 +101,29 @@ class SparkBotTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn(b"I'm Alive", resp.data)
 
+    def test_config_endpoint(self):
+        resp = self.app.get('/config')
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"test@test.com", resp.data)
+
     @requests_mock.mock()
     def test_process_incoming_message_send_help(self, m):
         m.get('//api.ciscospark.com/v1/people/me', json=MockSparkAPI.me())
         m.get('//api.ciscospark.com/v1/messages/incoming_message_id',
               json=MockSparkAPI.get_message_help())
+        m.post('//api.ciscospark.com/v1/messages', json={})
+        resp = self.app.post('/',
+                             data=MockSparkAPI.incoming_msg(),
+                             content_type="application/json")
+        self.assertEqual(resp.status_code, 200)
+        print(resp.data)
+        self.assertIn(b'I understand the following commands', resp.data)
+
+    @requests_mock.mock()
+    def test_process_incoming_message_default_command(self, m):
+        m.get('//api.ciscospark.com/v1/people/me', json=MockSparkAPI.me())
+        m.get('//api.ciscospark.com/v1/messages/incoming_message_id',
+              json=MockSparkAPI.empty_message())
         m.post('//api.ciscospark.com/v1/messages', json={})
         resp = self.app.post('/',
                              data=MockSparkAPI.incoming_msg(),

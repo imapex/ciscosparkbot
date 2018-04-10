@@ -81,10 +81,22 @@ class MockSparkAPI:
         }
         return data
 
+    # @classmethod
+    # def get_message_echo(cls):
+    #     data = MockSparkAPI.get_message_help()
+    #     data['text'] = "/echo foo"
+    #     return data
+
+    @classmethod
+    def empty_message(cls):
+        data = MockSparkAPI.get_message_help()
+        data['text'] = ""
+        return data
+
     @classmethod
     def get_message_dosomething(cls):
         data = MockSparkAPI.get_message_help()
-        data['text'] = "/dosomething foo"
+        data['text'] = "/echo imtheecho"
         return data
 
     @classmethod
