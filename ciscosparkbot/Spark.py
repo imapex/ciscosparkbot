@@ -272,20 +272,18 @@ class SparkBot(Flask):
         """
         self.commands[command] = {"help": help_message, "callback": callback}
 
-    # noinspection PyMethodMayBeStatic
-    # def extract_message(self, command, text):
-    #     """
-    #     Return message contents following a given command.
-    #     :param command: Command to search for.  Example "/echo"
-    #     :param text: text to search within.
-    #     :return:
-    #     """
-    #     cmd_loc = text.find(command)
-    #     message = text[cmd_loc + len(command):]
-    #     return message
+    def extract_message(self, command, text):
+        """
+        Return message contents following a given command.
+        :param command: Command to search for.  Example "/echo"
+        :param text: text to search within.
+        :return:
+        """
+        cmd_loc = text.find(command)
+        message = text[cmd_loc + len(command):]
+        return message
 
     # *** Default Commands included in Bot
-
     def send_help(self, post_data):
         """
         Construct a help message for users.

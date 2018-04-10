@@ -157,17 +157,5 @@ class SparkBotTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         print(resp.data)
 
-    @requests_mock.mock()
-    def test_process_incoming_message_echo(self, m):
-        m.get('//api.ciscospark.com/v1/people/me', json=MockSparkAPI.me())
-        m.get('//api.ciscospark.com/v1/messages/incoming_message_id',
-              json=MockSparkAPI.get_message_from_bot())
-        m.post('//api.ciscospark.com/v1/messages', json={})
-        resp = self.app.post('/',
-                             data=MockSparkAPI.incoming_msg(),
-                             content_type="application/json")
-        self.assertEqual(resp.status_code, 200)
-        print(resp.data)
-
     def tearDown(self):
         pass
