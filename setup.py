@@ -13,6 +13,10 @@ with open(os.path.join(base_dir, "ciscosparkbot", "__about__.py")) as f:
 
 test_requirements = [
     "requests_mock",
+    "coverage",
+    "python-coveralls",
+    "flake8"
+
 ]
 
 setup(
