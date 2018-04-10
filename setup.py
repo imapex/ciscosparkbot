@@ -11,6 +11,14 @@ about = {}
 with open(os.path.join(base_dir, "ciscosparkbot", "__about__.py")) as f:
     exec(f.read(), about)
 
+test_requirements = [
+    "requests_mock",
+    "coverage",
+    "python-coveralls",
+    "flake8"
+
+]
+
 setup(
     name=about["__title__"],
     version=about["__version__"],
@@ -24,4 +32,6 @@ setup(
                       "Flask>=0.12.1"
                       ],
     description="Python Bot for Cisco Spark",
+    test_suite='tests',
+    tests_require=test_requirements,
 )
