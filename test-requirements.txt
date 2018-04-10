@@ -1,0 +1,4 @@
+coverage
+python-coveralls
+flake8
+requests_mock
