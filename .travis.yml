@@ -5,7 +5,6 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-install: "pip install -r test-requirements.txt"
 script:
   - coverage run --source=ciscosparkbot setup.py test
 after_success:
