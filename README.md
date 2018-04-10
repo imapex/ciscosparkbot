@@ -131,3 +131,38 @@ Now launch your bot!!
 ```
 python sample.py
 ```
+
+
+
+## Local Development
+
+If you have an idea for a feature you would like to see, we gladly accept pull requests.  To get started developing, simply run the following..
+
+```
+git clone https://github.com/imapex/ciscosparkbot
+cd virlutils
+pip install -r test-requirements.txt
+python setup.py develop
+```
+
+### Linting
+
+We use flake 8 to lint our code. Please keep the repository clean by running:
+
+```
+flake8
+```
+
+### Testing
+
+Tests are located in the [tests](./tests) directory.
+
+To run the tests in the `tests` folder, you can run the following command
+from the project root.
+
+```
+coverage run --source=ciscosparkbot setup.py test
+coverage html
+```
+
+This will generate a code coverage report in a directory called `htmlcov`
