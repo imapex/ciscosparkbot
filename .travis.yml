@@ -1,9 +1,23 @@
-deploy:
-  provider: pypi
-  user: kecorbin
-  password:
-    secure: OphbopILusPN2J2O+3+RTOK1uWZ49cPu9jHeI7ulzIItMsKulba+/BCp9+R08dG85PRrM38wj8nQ2wpW2Kl1uwvHaodbnXIcoMZ8UIzqmytO6qleLQH9aaSjAv7xaPrhODq0MppnGQz/LaV2rY2CL8SpN25Z+L1ssk9Npj3ZlUDZ5aLDUuRKkinjuha5aQqL1LbstzI/XnQPlfBCQJZ4gDDomF2RPAYbAlm72ZZTZgvYvJULEwyYLSskPc/PGaYWCs460zg8a3sgHy0XSE14jws7xd6qqwBlPdK2zxqoYQOZz5vpGltOgB1kq4tvwGNuA0rHaU0bGPVdYVp+wOsdnbqqUK02xU2cGN0Ff4aQo2Wj2hJxFAICsmsP+KU8ACuk/lUfaY4u1NVG2VnVXd+TX15S+mbx/OSnOWzVtypaQKjPs8dRX3JB0BHK/K5s0Y02ZBVTh9d0iuJbrobcUenfRRlW4MVC+SP/HmXpDazUCHyn6db17LApziHLFE/8HqB7+fpNC3U+Z5YqtYs9nGtw1URBtcSpSs8bzya/iMtNb4so6VGATjBhF+eLgbqW3d8hG06Hy1mnzdp2N17FRuNa5+wfFI3HUG0SaYukL4qNNKuspcUPlI3XOupwf1+5W4KXlRTuu5VLCgDoNmwFwqAhC0q2/OEOkibP/um1XPwvNhQ=
-  on:
-    tags: true
-    distributions: sdist bdist_wheel
-    repo: imapex/ciscosparkbot
+language: python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+install: "pip install -r test-requirements.txt"
+script:
+  - flake8
+  - coverage run --source=ciscosparkbot setup.py test
+after_success:
+  - coveralls
+
+# deploy:
+#   provider: pypi
+#   user: kecorbin
+#   password:
+#     secure: OphbopILusPN2J2O+3+RTOK1uWZ49cPu9jHeI7ulzIItMsKulba+/BCp9+R08dG85PRrM38wj8nQ2wpW2Kl1uwvHaodbnXIcoMZ8UIzqmytO6qleLQH9aaSjAv7xaPrhODq0MppnGQz/LaV2rY2CL8SpN25Z+L1ssk9Npj3ZlUDZ5aLDUuRKkinjuha5aQqL1LbstzI/XnQPlfBCQJZ4gDDomF2RPAYbAlm72ZZTZgvYvJULEwyYLSskPc/PGaYWCs460zg8a3sgHy0XSE14jws7xd6qqwBlPdK2zxqoYQOZz5vpGltOgB1kq4tvwGNuA0rHaU0bGPVdYVp+wOsdnbqqUK02xU2cGN0Ff4aQo2Wj2hJxFAICsmsP+KU8ACuk/lUfaY4u1NVG2VnVXd+TX15S+mbx/OSnOWzVtypaQKjPs8dRX3JB0BHK/K5s0Y02ZBVTh9d0iuJbrobcUenfRRlW4MVC+SP/HmXpDazUCHyn6db17LApziHLFE/8HqB7+fpNC3U+Z5YqtYs9nGtw1URBtcSpSs8bzya/iMtNb4so6VGATjBhF+eLgbqW3d8hG06Hy1mnzdp2N17FRuNa5+wfFI3HUG0SaYukL4qNNKuspcUPlI3XOupwf1+5W4KXlRTuu5VLCgDoNmwFwqAhC0q2/OEOkibP/um1XPwvNhQ=
+#   on:
+#     tags: true
+#     distributions: sdist bdist_wheel
+#     repo: imapex/ciscosparkbot

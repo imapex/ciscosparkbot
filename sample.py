@@ -17,6 +17,7 @@ spark_token = os.getenv("SPARK_BOT_TOKEN")
 bot_url = os.getenv("SPARK_BOT_URL")
 bot_app_name = os.getenv("SPARK_BOT_APP_NAME")
 
+
 def do_something(incoming_msg):
     """
     Sample function to do some action.
@@ -24,6 +25,7 @@ def do_something(incoming_msg):
     :return: A text or markdown based reply
     """
     return "i did what you said - {}".format(incoming_msg.text)
+
 
 # Create a new bot
 bot = SparkBot(bot_app_name, spark_bot_token=spark_token,
