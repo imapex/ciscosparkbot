@@ -279,7 +279,6 @@ class SparkBot(Flask):
         :return:
         """
         del self.commands[command]
-        
 
     def extract_message(self, command, text):
         """
