@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/imapex/ciscosparkbot.svg?branch=master)](https://travis-ci.org/imapex/ciscosparkbot)
 [![Coverage Status](https://coveralls.io/repos/github/imapex/ciscosparkbot/badge.svg?branch=master)](https://coveralls.io/github/imapex/ciscosparkbot?branch=master)
+
+
 A flask based Bot for Cisco spark
 
 # Prerequisites
