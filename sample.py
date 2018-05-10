@@ -2,11 +2,9 @@
 """
 Sample code for using ciscosparkbot
 """
-
 import os
 from ciscosparkbot import SparkBot
 from ciscosparkbot.models import Response
-from ciscosparkapi import Message
 
 __author__ = "imapex"
 __author_email__ = "CiscoSparkBot@imapex.io"
@@ -28,18 +26,24 @@ def do_something(incoming_msg):
     """
     return "i did what you said - {}".format(incoming_msg.text)
 
+
 def ret_message(incoming_msg):
     m = Response()
-    m.files = 'https://sayingimages.com/wp-content/uploads/aaaaaalll-righty-then-alrighty-meme.jpg'
+    u = 'https://sayingimages.com/wp-content/uploads/'
+    u = u + 'aaaaaalll-righty-then-alrighty-meme.jpg'
+    m.files = u
     return m
+
 
 # Create a new bot
 bot = SparkBot(bot_app_name, spark_bot_token=spark_token,
                spark_bot_url=bot_url, spark_bot_email=bot_email, debug=True)
 
+
 # Add new command
 bot.add_command('/dosomething', 'help for do something', do_something)
-bot.add_command('/demo', 'sampel that allows spark message to be returned', ret_message)
+bot.add_command('/demo', 'sampel that allows spark message to be returned',
+                ret_message)
 
 # Run Bot
 bot.run(host='0.0.0.0', port=5000)
