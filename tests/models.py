@@ -1,8 +1,6 @@
 import unittest
-from ciscosparkbot import SparkBot
-import requests_mock
-from .spark_mock import MockSparkAPI
 from ciscosparkbot.models import Response
+
 
 class ModelTests(unittest.TestCase):
 
@@ -34,11 +32,6 @@ class ModelTests(unittest.TestCase):
     def test_response_json(self):
         r = Response()
         r.text = "foo"
-        self.assertIn('text', r.json())
-
-    def test_response_from_json(self):
-        data = {"text": "foo"}
-        r = Response.from_json(data)
         self.assertIn('text', r.json())
 
     def test_response_as_dict(self):
