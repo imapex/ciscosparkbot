@@ -9,6 +9,7 @@ Classes:
 
 from flask import Flask, request
 from ciscosparkapi import CiscoSparkAPI
+from ciscosparkbot.models import Response
 import sys
 import json
 
@@ -257,8 +258,13 @@ class SparkBot(Flask):
         else:
             pass
 
-        # send_message_to_room(room_id, reply)
-        if reply:
+        # allow command handlers to craft their own Spark message
+        if reply and isinstance(reply, Response):
+            reply.roomId = room_id
+            reply = reply.as_dict()
+            self.spark.messages.create(**reply)
+            reply = "ok"
+        elif reply:
             self.spark.messages.create(roomId=room_id, markdown=reply)
         return reply
 
