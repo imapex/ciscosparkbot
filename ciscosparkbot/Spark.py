@@ -23,6 +23,7 @@ class SparkBot(Flask):
     """An instance of a Cisco Spark Bot"""
 
     def __init__(self, spark_bot_name, spark_bot_token=None,
+                 spark_api_url=None,
                  spark_bot_email=None, spark_bot_url=None,
                  default_action="/help", debug=False):
         """
@@ -30,6 +31,7 @@ class SparkBot(Flask):
 
         :param spark_bot_name: Friendly name for this Bot (webhook name)
         :param spark_bot_token: Spark Auth Token for Bot Account
+        :param spark_api_url: URL to the Spark/Webex API endpoint
         :param spark_bot_email: Spark Bot Email Address
         :param spark_bot_url: WebHook URL for this Bot
         :param default_action: What action to take if no command found.
@@ -54,7 +56,11 @@ class SparkBot(Flask):
         self.default_action = default_action
 
         # Create Spark API Object for interacting with Spark
-        self.spark = CiscoSparkAPI(access_token=spark_bot_token)
+        if (spark_api_url):
+            self.spark = CiscoSparkAPI(access_token=spark_bot_token,
+                                       base_url=spark_api_url)
+        else:
+            self.spark = CiscoSparkAPI(access_token=spark_bot_token)
 
         # A dictionary of commands this bot listens to
         # Each key in the dictionary is a command, with associated help
@@ -227,7 +233,10 @@ class SparkBot(Flask):
 
         # First make sure not processing a message from the bots
         # Needed to avoid the bot talking to itself
-        if message.personEmail in self.spark.people.me().emails:
+        # We check using IDs instead of emails since the email
+        # of the bot could change while the bot is running
+        # for example from bot@sparkbot.io to bot@webex.bot
+        if message.personId in self.spark.people.me().id:
             if self.DEBUG:
                 sys.stderr.write("Ignoring message from our self" + "\n")
             return ""
