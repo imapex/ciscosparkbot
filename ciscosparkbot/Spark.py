@@ -57,7 +57,8 @@ class SparkBot(Flask):
 
         # Create Spark API Object for interacting with Spark
         if (spark_api_url):
-            self.spark = CiscoSparkAPI(access_token=spark_bot_token, base_url=spark_api_url)
+            self.spark = CiscoSparkAPI(access_token=spark_bot_token,
+                                       base_url=spark_api_url)
         else:
             self.spark = CiscoSparkAPI(access_token=spark_bot_token)
 
