@@ -263,7 +263,7 @@ class SparkBot(Flask):
             reply = self.commands[self.default_action]["callback"](message)
         elif command in self.commands.keys():
             # noinspection PyCallingNonCallable
-            reply = self.commands[command]["callback"](message)
+            reply = self.commands[command]["callback"](message, post_data)
         else:
             pass
 

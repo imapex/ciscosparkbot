@@ -18,7 +18,7 @@ bot_url = os.getenv("SPARK_BOT_URL")
 bot_app_name = os.getenv("SPARK_BOT_APP_NAME")
 
 
-def do_something(incoming_msg):
+def do_something(incoming_msg, webhook):
     """
     Sample function to do some action.
     :param incoming_msg: The incoming message object from Spark
@@ -27,7 +27,7 @@ def do_something(incoming_msg):
     return "i did what you said - {}".format(incoming_msg.text)
 
 
-def ret_message(incoming_msg):
+def ret_message(incoming_msg, webhook):
     m = Response()
     u = 'https://sayingimages.com/wp-content/uploads/'
     u = u + 'aaaaaalll-righty-then-alrighty-meme.jpg'
