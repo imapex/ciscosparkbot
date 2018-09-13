@@ -81,14 +81,14 @@ class MockSparkAPI:
             'ownedBy': 'creator',
             'status': 'active',
             'created': '2018-09-13T19:35:51.248Z',
-            'actorId': 'Y2lzY29zcGFyazovL3VzL1BFT1BMRS9mOTc4ZDQ2NS1kZWI0LTQxZTgtYWNkMi1iNjI5ZDc1ODU5N2E',
+            'actorId': 'OTZhYmMyYWEtM2RjYy0xMWU1LWExNTItZmUzNDgxOWNkYzlh',
             'data': {
                 'id': 'incoming_membership_id',
                 'roomId': 'some_room_id',
                 'personId': 'some_person_id',
                 'personEmail': 'matt@example.com',
                 'personDisplayName': 'Matt',
-                'personOrgId': 'OTZhYmMyYWEtM2RjYy0xMWU1LWExNTItZmUzNDgxOWNkYzlh',
+                'personOrgId': 'OTZhYmMyYWEtM2RjYy0xMWU1LWExNTItZmUzNDgxOWNk',
                 'isModerator': False,
                 'isMonitor': False,
                 'created': '2018-09-13T19:35:58.803Z'
@@ -110,21 +110,21 @@ class MockSparkAPI:
             'ownedBy': 'creator',
             'status': 'active',
             'created': '2018-09-13T19:35:51.248Z',
-            'actorId': 'Y2lzY29zcGFyazovL3VzL1BFT1BMRS9mOTc4ZDQ2NS1kZWI0LTQxZTgtYWNkMi1iNjI5ZDc1ODU5N2E',
+            'actorId': 'OTZhYmMyYWEtM2RjYy0xMWU1LWExNTItZmUzNDgxOWNkYzlh',
             'data': {
                 'id': 'incoming_membership_id',
                 'roomId': 'some_room_id',
                 'personId': 'some_person_id',
                 'personEmail': 'matt@cisco.com',
                 'personDisplayName': 'Matt',
-                'personOrgId': 'OTZhYmMyYWEtM2RjYy0xMWU1LWExNTItZmUzNDgxOWNkYzlh',
+                'personOrgId': 'OTZhYmMyYWEtM2RjYy0xMWU1LWExNTItZmUzNDgxOWNk',
                 'isModerator': False,
                 'isMonitor': False,
                 'created': '2018-09-13T19:35:58.803Z'
             }
         }
         return json.dumps(data)
-    
+
     @classmethod
     def get_message_help(cls):
         data = {
