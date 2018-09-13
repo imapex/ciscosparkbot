@@ -215,7 +215,7 @@ class SparkBot(Flask):
         """
         return "I'm Alive"
 
-    # noinspection PyPackageRequirements
+
     def process_incoming_message(self):
         """
         Process an incoming message, determine the command and action,
