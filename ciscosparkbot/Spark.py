@@ -122,8 +122,8 @@ class SparkBot(Flask):
         Setup Spark WebHook to send incoming messages to this bot.
         :param name: Name of the WebHook
         :param targeturl: Target URL for WebHook
-        :param wh_resource: WebHook 'resource', such as messages, memberships, etc.
-        :param wh_event: WebHook 'event', such as created, or all
+        :param wh_resource: WebHook 'resource'; messages, memberships, etc.
+        :param wh_event: WebHook 'event'; created, or all
         :return: WebHook
         """
         # Get a list of current webhooks
