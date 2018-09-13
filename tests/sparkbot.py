@@ -2,7 +2,6 @@ import unittest
 from ciscosparkbot import SparkBot
 import requests_mock
 from .spark_mock import MockSparkAPI
-import json
 
 
 class SparkBotTests(unittest.TestCase):
