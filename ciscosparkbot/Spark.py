@@ -25,7 +25,8 @@ class SparkBot(Flask):
     def __init__(self, spark_bot_name, spark_bot_token=None,
                  spark_api_url=None,
                  spark_bot_email=None, spark_bot_url=None,
-                 default_action="/help", debug=False):
+                 default_action="/help", debug=False, wh_resource="messages",
+                 wh_event="created"):
         """
         Initialize a new SparkBot
 
@@ -54,6 +55,8 @@ class SparkBot(Flask):
         self.spark_bot_email = spark_bot_email
         self.spark_bot_url = spark_bot_url
         self.default_action = default_action
+        self.wh_resource = wh_resource
+        self.wh_event = wh_event
 
         # Create Spark API Object for interacting with Spark
         if (spark_api_url):
@@ -107,16 +110,20 @@ class SparkBot(Flask):
         # Setup the Spark Connection
         globals()["spark"] = CiscoSparkAPI(access_token=self.spark_bot_token)
         globals()["webhook"] = self.setup_webhook(self.spark_bot_name,
-                                                  self.spark_bot_url)
+                                                  self.spark_bot_url,
+                                                  self.wh_resource,
+                                                  self.wh_event)
         sys.stderr.write("Configuring Webhook. \n")
         sys.stderr.write("Webhook ID: " + globals()["webhook"].id + "\n")
 
     # noinspection PyMethodMayBeStatic
-    def setup_webhook(self, name, targeturl):
+    def setup_webhook(self, name, targeturl, wh_resource, wh_event):
         """
         Setup Spark WebHook to send incoming messages to this bot.
         :param name: Name of the WebHook
         :param targeturl: Target URL for WebHook
+        :param wh_resource: WebHook 'resource'; messages, memberships, etc.
+        :param wh_event: WebHook 'event'; created, or all
         :return: WebHook
         """
         # Get a list of current webhooks
@@ -136,16 +143,19 @@ class SparkBot(Flask):
             sys.stderr.write("Creating new webhook.\n")
             wh = self.spark.webhooks.create(name=name,
                                             targetUrl=targeturl,
-                                            resource="messages",
-                                            event="created")
+                                            resource=wh_resource,
+                                            event=wh_event)
 
-        # if we have an existing webhook update it
+        # if we have an existing webhook, delete and recreate
+        # (can't update resource/event)
         else:
             # Need try block because if there are NO webhooks it throws error
             try:
-                wh = self.spark.webhooks.update(webhookId=wh.id,
-                                                name=name,
-                                                targetUrl=targeturl)
+                wh = self.spark.webhooks.delete(webhookId=wh.id)
+                wh = self.spark.webhooks.create(name=name,
+                                                targetUrl=targeturl,
+                                                resource=wh_resource,
+                                                event=wh_event)
             # https://github.com/CiscoDevNet/ciscosparkapi/blob/master/ciscosparkapi/api/webhooks.py#L237
             except Exception as e:
                 msg = "Encountered an error updating webhook: {}"
@@ -217,6 +227,7 @@ class SparkBot(Flask):
         and determine reply.
         :return:
         """
+        reply = None
 
         # Get the webhook data
         post_data = request.json
@@ -224,48 +235,55 @@ class SparkBot(Flask):
         # Determine the Spark Room to send reply to
         room_id = post_data["data"]["roomId"]
 
-        # Get the details about the message that was sent.
-        message_id = post_data["data"]["id"]
-        message = self.spark.messages.get(message_id)
-        if self.DEBUG:
-            sys.stderr.write("Message content:" + "\n")
-            sys.stderr.write(str(message) + "\n")
-
-        # First make sure not processing a message from the bots
-        # Needed to avoid the bot talking to itself
-        # We check using IDs instead of emails since the email
-        # of the bot could change while the bot is running
-        # for example from bot@sparkbot.io to bot@webex.bot
-        if message.personId in self.spark.people.me().id:
+        rsc = post_data["resource"]
+        if rsc != "messages":
+            if rsc in self.commands.keys():
+                reply = self.commands[rsc]["callback"](self, post_data)
+            else:
+                return ""
+        elif post_data["resource"] == "messages":
+            # Get the details about the message that was sent.
+            message_id = post_data["data"]["id"]
+            message = self.spark.messages.get(message_id)
             if self.DEBUG:
-                sys.stderr.write("Ignoring message from our self" + "\n")
-            return ""
+                sys.stderr.write("Message content:" + "\n")
+                sys.stderr.write(str(message) + "\n")
 
-        # Log details on message
-        sys.stderr.write("Message from: " + message.personEmail + "\n")
+            # First make sure not processing a message from the bots
+            # Needed to avoid the bot talking to itself
+            # We check using IDs instead of emails since the email
+            # of the bot could change while the bot is running
+            # for example from bot@sparkbot.io to bot@webex.bot
+            if message.personId in self.spark.people.me().id:
+                if self.DEBUG:
+                    sys.stderr.write("Ignoring message from our self" + "\n")
+                return ""
 
-        # Find the command that was sent, if any
-        command = ""
-        for c in self.commands.items():
-            if message.text.find(c[0]) != -1:
-                command = c[0]
-                sys.stderr.write("Found command: " + command + "\n")
-                # If a command was found, stop looking for others
-                break
+            # Log details on message
+            sys.stderr.write("Message from: " + message.personEmail + "\n")
 
-        # Build the reply to the user
-        reply = ""
+            # Find the command that was sent, if any
+            command = ""
+            for c in self.commands.items():
+                if message.text.find(c[0]) != -1:
+                    command = c[0]
+                    sys.stderr.write("Found command: " + command + "\n")
+                    # If a command was found, stop looking for others
+                    break
 
-        # Take action based on command
-        # If no command found, send the default_action
-        if command in [""] and self.default_action:
-            # noinspection PyCallingNonCallable
-            reply = self.commands[self.default_action]["callback"](message)
-        elif command in self.commands.keys():
-            # noinspection PyCallingNonCallable
-            reply = self.commands[command]["callback"](message)
-        else:
-            pass
+            # Build the reply to the user
+            reply = ""
+
+            # Take action based on command
+            # If no command found, send the default_action
+            if command in [""] and self.default_action:
+                # noinspection PyCallingNonCallable
+                reply = self.commands[self.default_action]["callback"](message)
+            elif command in self.commands.keys():
+                # noinspection PyCallingNonCallable
+                reply = self.commands[command]["callback"](message)
+            else:
+                pass
 
         # allow command handlers to craft their own Spark message
         if reply and isinstance(reply, Response):
