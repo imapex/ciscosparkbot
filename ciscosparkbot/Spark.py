@@ -25,7 +25,8 @@ class SparkBot(Flask):
     def __init__(self, spark_bot_name, spark_bot_token=None,
                  spark_api_url=None,
                  spark_bot_email=None, spark_bot_url=None,
-                 default_action="/help", debug=False, wh_resource="messages", wh_event="created"):
+                 default_action="/help", debug=False, wh_resource="messages",
+                 wh_event="created"):
         """
         Initialize a new SparkBot
 
@@ -109,7 +110,9 @@ class SparkBot(Flask):
         # Setup the Spark Connection
         globals()["spark"] = CiscoSparkAPI(access_token=self.spark_bot_token)
         globals()["webhook"] = self.setup_webhook(self.spark_bot_name,
-                                                  self.spark_bot_url, self.wh_resource, self.wh_event)
+                                                  self.spark_bot_url,
+                                                  self.wh_resource,
+                                                  self.wh_event)
         sys.stderr.write("Configuring Webhook. \n")
         sys.stderr.write("Webhook ID: " + globals()["webhook"].id + "\n")
 
@@ -119,6 +122,8 @@ class SparkBot(Flask):
         Setup Spark WebHook to send incoming messages to this bot.
         :param name: Name of the WebHook
         :param targeturl: Target URL for WebHook
+        :param wh_resource: WebHook 'resource', such as messages, memberships, etc.
+        :param wh_event: WebHook 'event', such as created, or all
         :return: WebHook
         """
         # Get a list of current webhooks
@@ -141,7 +146,8 @@ class SparkBot(Flask):
                                             resource=wh_resource,
                                             event=wh_event)
 
-        # if we have an existing webhook, delete and recreate (can't update resource/event)
+        # if we have an existing webhook, delete and recreate
+        # (can't update resource/event)
         else:
             # Need try block because if there are NO webhooks it throws error
             try:
@@ -215,7 +221,6 @@ class SparkBot(Flask):
         """
         return "I'm Alive"
 
-
     def process_incoming_message(self):
         """
         Process an incoming message, determine the command and action,
@@ -230,9 +235,10 @@ class SparkBot(Flask):
         # Determine the Spark Room to send reply to
         room_id = post_data["data"]["roomId"]
 
-        if post_data["resource"] != "messages":
-            if post_data["resource"] in self.commands.keys():
-                reply = self.commands[post_data["resource"]]["callback"](self, post_data)
+        rsc = post_data["resource"]
+        if rsc != "messages":
+            if rsc in self.commands.keys():
+                reply = self.commands[rsc]["callback"](self, post_data)
             else:
                 return ""
         elif post_data["resource"] == "messages":
