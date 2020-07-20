@@ -247,7 +247,7 @@ class SparkBot(Flask):
         # Find the command that was sent, if any
         command = ""
         for c in self.commands.items():
-            if message.text.find(c[0]) != -1:
+            if message.text.lower().find(c[0]) != -1:
                 command = c[0]
                 sys.stderr.write("Found command: " + command + "\n")
                 # If a command was found, stop looking for others
@@ -285,7 +285,7 @@ class SparkBot(Flask):
         :param callback: The function to run when this command is given
         :return:
         """
-        self.commands[command] = {"help": help_message, "callback": callback}
+        self.commands[command.lower()] = {"help": help_message, "callback": callback}
 
     def remove_command(self, command):
         """
@@ -315,7 +315,7 @@ class SparkBot(Flask):
         """
         message = "Hello!  "
         message += "I understand the following commands:  \n"
-        for c in self.commands.items():
+        for c in sorted(self.commands.items()):
             if c[1]["help"][0] != "*":
                 message += "* **%s**: %s \n" % (c[0], c[1]["help"])
         return message
