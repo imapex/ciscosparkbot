@@ -43,9 +43,9 @@ The easiest way to use this module is to set a few environment variables
 
 ```
 export SPARK_BOT_URL=https://mypublicsite.io
-export SPARK_BOT_TOKEN=<your bots token>
-export SPARK_BOT_EMAIL=<your bots email?
-export SPARK_BOT_APP_NAME=<your bots name>
+export SPARK_BOT_TOKEN=<your bot's token>
+export SPARK_BOT_EMAIL=<your bot's email>
+export SPARK_BOT_APP_NAME=<your bot's name>
 ```
 
 A [sample script](sample.py) is also provided for your convenience
